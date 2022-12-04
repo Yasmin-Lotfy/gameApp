@@ -42,17 +42,19 @@ const [validError, setValidError] = useState([]);
   let submitForm = async(e)=>{
     e.preventDefault()
     let validationResponse = ValidationFormData();
-    console.log(user)
-    console.log(validError)
+// قبل ما ببعت الداتا بروح اتشيك ال validation joi 
+
     if(validationResponse.error){
+      //error from joi validation 
       setValidError(validationResponse.error.details);
-      console.log(validError)
        }else{
+        // calling api 
         let {data} =await axios.post('https://route-egypt-api.herokuapp.com/signup', user);
         console.log(data);
         if(data.message === "success"){
           goToLogin()
         }else{
+          //error from api
           setErrorMsg(data.message)
           console.log("error")
         }
@@ -92,7 +94,7 @@ const [validError, setValidError] = useState([]);
                     {validError.map((error, index)=> error.context.label === "age"? <p className='mt-2 alert alert-warning py-1 px-3'>{error.message}</p>:'')}
                     
                     <input onChange={getInputValue} type="password" className='form-control w-100 ' placeholder='password' name="password"/>
-                    {validError.map((error, index)=> error.context.label === "password"? <p className='mt-2 alert alert-warning py-1 px-3'>{error.message}</p>:'')}
+                    {validError.map((error, index)=> error.context.label === "password"? <p className='mt-2 alert alert-warning py-1 px-3'>Invalid Password</p>:'')}
 
                     <button type='submit' class={`w-100 mb-2 text-white btn ${style.btnControl}`}> Create Account</button>
                   </form>

@@ -9,3 +9,25 @@ body {
   color: $textColor;
 }
 
+.cardGame{
+  &:hover{
+      transform: scale(1.1);
+  }
+  background-color: rgb(50,56,62) !important;
+  text-decoration: none !important;
+  transition: 0.5s all;
+  cursor: pointer;
+}
+.greyBgColor{
+  background-color: grey;
+  color: #000;
+  font-size: 0.8rem;
+}
+.greyColor{
+  color: grey;
+  font-size: 1.5rem;
+
+}
+.pointer{
+  cursor: pointer;
+}

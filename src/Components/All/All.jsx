@@ -1,12 +1,9 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import LoadingScreen from '../LoadingScreen/LoadingScreen';
-import Register from '../Register/Register';
-import style from './All.module.scss'
+import GameRendering from '../GameRendering/GameRendering';
 
 export default function All() {
   let [recomendedGamed, setRecomendedGamed] = useState([]);
-
 
   let getRecommendedGame=async ()=>{
     const options = {
@@ -19,7 +16,7 @@ export default function All() {
     };
   
     axios.request(options).then(function (response) {
-      console.log(response.data);
+      // console.log(response.data);
       setRecomendedGamed(response.data)
       
     }).catch(function (error) {
@@ -33,34 +30,15 @@ export default function All() {
     getRecommendedGame()
 
   }, [])
+ 
 
 
   
   return (
     <>
-   { recomendedGamed.length > 0 ? <div className="container">
-    <div className="recomm my-5">
-      <div className="row gy-2 gx-2">
-              {recomendedGamed.filter((elem,index)=>  index < 20 ).map((element,index)=> 
-                <div className={`col-md-3  `} key={index}>
-                  <div className={`item  rounded-4 px-2  py-2 ${style.cardGame}`}>
-                    <img className='w-100' src={element.thumbnail} alt='game-item' />
-                    <div className="header-game  d-flex justify-content-between align-items-center">
-                    <h3 className='fs-4'>{element.title}</h3>
-                    <button className='btn btn-info'>free</button>
-                    </div>
-                  </div>
-                </div>
-              )}
-    
-            </div>
-       
-      </div>
-    </div> : <LoadingScreen/>}
-    
-
    
-    
+    <GameRendering item={recomendedGamed}/>
+   
     </>
   )
 }

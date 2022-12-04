@@ -1,13 +1,14 @@
 import axios from 'axios'
-import React, { useState } from 'react'
+import React, {  useState } from 'react'
 import style from './Login.module.scss'
 import logo from '../../images/logo.png'
-import { Link, useNavigate } from 'react-router-dom'
+import {  useNavigate } from 'react-router-dom'
 import joi from 'joi'
 
 
 
-export default function Login() {
+
+export default function Login({getuserDataToken}) {
   let navigate = useNavigate()
   const [user, setUser] = useState({
     "email":'',
@@ -27,21 +28,21 @@ export default function Login() {
   let gotoReg = ()=>{
     navigate('/reg')
   }
+  
 
   let submitForm = async(e)=>{
     e.preventDefault()
     
     let validationResponse = ValidationFormData();
-    // console.log("gjgj")
-    // console.log(validationResponse.error.details)
-    // console.log(user)
+
     if(validationResponse.error){
       setValidError(validationResponse.error.details);
-      console.log(validError)
        }else{
         let {data} =await axios.post('https://route-egypt-api.herokuapp.com/signin', user);
-        console.log(data);
         if(data.message === "success"){
+          console.log(data.token)
+          localStorage.setItem("userToken", data.token)
+          getuserDataToken()
           goToHome()
         }else{
           setErrorMsg(data.message)
@@ -79,7 +80,7 @@ export default function Login() {
                   {validError.map((error, index)=> error.context.label === "email"? <p className='mt-2 alert alert-warning py-1 px-3'>{error.message}</p>:'')}
 
                   <input type="password" onChange={getInputValue} className={`form-control w-100 ${style.customInput}`}  placeholder='Password' name="password"/>
-                  {validError.map((error, index)=> error.context.label === "password"? <p className='mt-2 alert alert-warning py-1 px-3'>{error.message}</p>:'')}
+                  {validError.map((error, index)=> error.context.label === "password"? <p className='mt-2 alert alert-warning py-1 px-3'>Invalid Password</p>:'')}
 
                   <button class={`w-100 mb-2 text-white btn ${style.btnControl}`}> Log In</button>
                 </form>
